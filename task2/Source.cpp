@@ -11,8 +11,8 @@ struct Matrix {
 };
 
 Matrix* read(const char* filename); // функция, читабщая матрицу из файла.
-double findSum(Matrix* matr);
-char* echo(const char* file);
+double findSum(Matrix* matr); // функция, ищущая сумму
+char* reshow(const char* file); 
 void ansver();
 
 int main() {
@@ -49,7 +49,7 @@ int main() {
 			break;
 		}
 		case 2: {
-			char* inf = echo("input.txt");
+			char* inf = reshow("input.txt");
 			cout << inf << endl << endl;
 			break;
 		}
@@ -60,7 +60,7 @@ int main() {
 			break;
 		}
 		case 4: {
-			char* ans = echo("output.txt");
+			char* ans = reshow("output.txt");
 			cout << ans << endl << endl;
 			break;
 		}
@@ -90,7 +90,7 @@ void ansver() {
 	out.close();
 }
 
-char* echo(const char* file) {
+char* reshow(const char* file) {
 	char* text = new char[10000];
 	ifstream in;
 	in.open(file);
