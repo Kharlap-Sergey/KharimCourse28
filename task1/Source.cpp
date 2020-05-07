@@ -173,3 +173,6 @@ char* read(const char* filename) {
 	in.close();
 	return pointer;
 }
+
+char New();
+char c;
