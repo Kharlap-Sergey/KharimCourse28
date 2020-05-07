@@ -3,38 +3,38 @@
 const int NL = 10; // text lenght in liness
 const int NS = 100; // lines length
 const int NW = 200; // word lenght
-const int MAX = NL * NS + 10; // вычисление максимальной длинны файла
+const int MAX = NL * NS + 10;
 
 using namespace std;
 
 ifstream in;
 ofstream out;
 
-char* information; // указатель на char, в который будет указывать на текст
-struct List {// структура список, дл€ реализации однонаправленного не замкнутого списка
-	char* value; // значение зранимае списком
-	List* next = NULL; // указатель на следующий элемент списка
+char* information;
+struct List {
+	char* value;
+	List* next = NULL;
 };
 
 char* read(const char* filename); // функци€, читающа€ текст из файла.
-List* extractWords(char* text); // функци€, разбивающа€ текст на слова и занас€ща€ их в список
-List* insertElement(List* current, char* value);//функци€, вставл€юща€ в список элемент, после эказанного
-bool isRus(char c); // функци€, провер€юща€ принадлежность символа к кирилице
-bool isCorrect(char* word, char letter); // функци€, определ€юща€ коректность слова
-char* reshowFile(const char* file);// функци€, показывающа€ содержимое файла.
-void ansver();// функци€, выполн€юща€ подсчет ответа
+List* extractWords(char* text);
+List* insertElement(List* current, char* value);
+bool isAlpha(char c);
+bool isCorrect(char* word, char letter);
+char* echo(const char* file);
+void ansver();
 
 int main() {
-	setlocale(LC_ALL, "rus"); // установка руского €зыка 
-	system("chcp 1251");// перевод кансоли на €зык управлени€ '1251' -русский
+	setlocale(LC_ALL, "rus");
+	system("chcp 1251");
 
-	while (true) { // организаци€ пользовательского меню
+	while (true) {
 		cout << "введите 1 - дл€ перезаписи информации\n\
 введите 2 - дл€ показа записаных данных;\n\
 введите 3 - дл€ обработки входных данных;\n\
 введите 4 - дл€ пока результатов;\nиначе программа будет завершнена\n";
 		int step;
-		cin >> step; 
+		cin >> step;
 		switch (step) {
 		case 1: {
 			cout << "введите текст дл€ анализа, в одну строку\n";
@@ -50,7 +50,7 @@ int main() {
 			break;
 		}
 		case 2: {
-			char* text = reshowFile("input.txt");
+			char* text = echo("input.txt");
 			cout << "текст:\n";
 			cout << text << endl << endl;
 			break;
@@ -61,7 +61,7 @@ int main() {
 			break;
 		}
 		case 4: {
-			char* text = reshowFile("output.txt");
+			char* text = echo("output.txt");
 			cout << "текст:\n";
 			cout << text << endl << endl;
 			break;
@@ -78,16 +78,16 @@ int main() {
 
 
 void ansver() {
-	information = read("input.txt"); // получение информации из файла
+	information = read("input.txt");
 	char alpha;
 
-	List* zero = extractWords(information); // создание списка
+	List* zero = extractWords(information);
 	List* curent = zero->next;
 
-	out.open("output.txt");// открытие файла дл€ вывода информции
+	out.open("output.txt");
 	out << information << endl;
 	out << "\nсосто€ние списка:\n";
-	while (curent != NULL) { // конечный элемент списка, имее указтель на NULL, проход по списку и вывод его соста€ни€ в фай
+	while (curent != NULL) {
 		out << (curent->value) << ' ';
 		if (curent->next == NULL) {
 			alpha = curent->value[strlen(curent->value) - 1];
@@ -95,9 +95,8 @@ void ansver() {
 		curent = curent->next;
 	}
 	out << endl;
-	out << "ответ\n";
 	curent = zero->next;
-	while (curent != NULL) {// вывод только тех элементов списка, которые соответствуют условию
+	while (curent != NULL) {
 		if (isCorrect(curent->value, alpha))
 			out << curent->value << ' ';
 		curent = curent->next;
@@ -106,8 +105,8 @@ void ansver() {
 	out.close();
 }
 
-char* reshowFile(const char* file) {
-	char* text = new char[10000]; 
+char* echo(const char* file) {
+	char* text = new char[10000];
 	ifstream in;
 	in.open(file);
 	in.get(text, 10000, '/');
@@ -125,7 +124,7 @@ char toLower(char c) {
 	}
 	return c;
 }
-bool isRus(char c) {
+bool isAlpha(char c) {
 	bool ans = 'ј' <= c && c <= '€';
 	return ans;
 }
@@ -146,7 +145,7 @@ List* extractWords(char* text) {
 	char* boof = new char[NW + 1];
 	int len = 0;
 	for (int i = 0; text[i] != '\0'; i++) {
-		if (isRus(text[i])) {
+		if (isAlpha(text[i])) {
 			boof[len] = toLower(text[i]);
 			len++;
 			isWordStart = true;
